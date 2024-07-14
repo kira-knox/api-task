@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+# pydantic model for comments
 class Comments(BaseModel):
     postId: int
     id: int

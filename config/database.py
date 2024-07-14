@@ -1,10 +1,5 @@
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
-# client = MongoClient('mongodb://localhost:27017/')
-# db = client.user_data
-# postsCollection = db['posts']
-# commentsCollection = db['comments']
-# usersCollection = db['users']
 
 # Mongo connection
 client = MongoClient('localhost', 27017)
@@ -15,6 +10,7 @@ try:
 except ConnectionFailure:
    print("Server not available")
 
+# connect to the database
 db = client.user_data
 postsCollection = db['posts']
 commentsCollection = db['comments']

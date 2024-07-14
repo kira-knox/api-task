@@ -1,5 +1,4 @@
 import pytest
-import requests
 from main import app
 from fastapi.testclient import TestClient
 from config.database import usersCollection
@@ -7,6 +6,7 @@ from config.database import usersCollection
 client = TestClient(app)
 
 # Test cases for each endpoint
+# test case for total posts per user
 def test_get_posts_count():
     response = client.get("/users/1/postsCount")
     assert response.status_code == 200

@@ -45,6 +45,7 @@ async def get_comments_per_post(post_id: int):
 # add a user
 @router.post('/users/addUser')
 async def add_user(user: User):
+    # check if user already exists
     if usersCollection.find_one({"id": user.id}):
         raise HTTPException(status_code=400, detail="User already exists.")
     usersCollection.insert_one(user.model_dump())
@@ -53,12 +54,17 @@ async def add_user(user: User):
 # update user details
 @router.put('/users/{user_id}/updateUser')
 async def update_user(user_id: int, user: User):
-    usersCollection.find_one_and_update({"id":user_id}, {"$set": user.model_dump(by_alias=True)})
-    return {"message": "User updated successfully."}
+    # check if user does not exist
+    if usersCollection.find_one({"id": user_id}) is None:
+        raise HTTPException(status_code=400, detail="User not found.")
+    else:
+        usersCollection.find_one_and_update({"id":user_id}, {"$set": user.model_dump(by_alias=True)})
+        return {"message": "User updated successfully."}
 
 # delete a user
 @router.delete('/users/{user_id}/deleteUser')
 async def delete_user(user_id: int):
+    # check if user does not exist
     if usersCollection.find_one({"id": user_id}) is None:
         raise HTTPException(status_code=400, detail="User not found.")
     else:

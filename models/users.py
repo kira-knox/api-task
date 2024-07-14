@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+# pydantic model for users
 class Geo(BaseModel):
     lat: str
     lng: str
