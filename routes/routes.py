@@ -32,15 +32,21 @@ async def fetch_all_users():
 # get the total number of posts from each user
 @router.get('/users/{user_id}/postsCount')
 async def get_posts_count(user_id: int):
-    postsCount = postsCollection.count_documents({"userId":user_id})
-    return postsCount
+    if postsCollection.find_one({"userId": user_id}) is None:
+        raise HTTPException(status_code=400, detail="User not found.")
+    else:
+        postsCount = postsCollection.count_documents({"userId":user_id})
+        return postsCount
 
 # get the total comments under each post
 @router.get('/posts/{post_id}/totalComments')
 async def get_comments_per_post(post_id: int):
-    comments = list(commentsCollection.find({"postId": post_id}))
-    commentsCount = len(comments)
-    return commentsCount
+    if postsCollection.find_one({"id": post_id}) is None:
+        raise HTTPException(status_code=400, detail="Post not found.")
+    else:
+        comments = list(commentsCollection.find({"postId": post_id}))
+        commentsCount = len(comments)
+        return commentsCount
 
 # add a user
 @router.post('/users/addUser')
